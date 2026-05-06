@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pixel Realm — 16-bit RPG</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="screen-wrap">
+      <canvas id="game" width="320" height="240"></canvas>
+      <div id="hud">
+        <div class="hud-row">
+          <span id="hud-name">Hero</span>
+          <span id="hud-class">Warrior</span>
+          <span id="hud-lvl">Lv 1</span>
+          <span id="hud-gold">0g</span>
+        </div>
+        <div class="bar"><div id="hp-bar" class="bar-fill hp"></div><span id="hp-text">20/20</span></div>
+        <div class="bar"><div id="mp-bar" class="bar-fill mp"></div><span id="mp-text">5/5</span></div>
+        <div class="bar"><div id="xp-bar" class="bar-fill xp"></div><span id="xp-text">0/10</span></div>
+      </div>
+      <div id="dialog" class="hidden">
+        <div id="dialog-name"></div>
+        <div id="dialog-text"></div>
+        <div id="dialog-hint">Press E / Space to continue</div>
+      </div>
+      <div id="quest-toast" class="hidden"></div>
+    </div>
+
+    <!-- Title / Character creator overlay -->
+    <div id="title" class="overlay">
+      <h1>PIXEL REALM</h1>
+      <p class="sub">A 16-bit Pocket RPG</p>
+      <div class="menu">
+        <button id="btn-new">New Game</button>
+        <button id="btn-continue">Continue</button>
+        <button id="btn-help">How to Play</button>
+      </div>
+      <div class="footer">Move WASD/Arrows · Interact E/Space · Menu Tab · Attack J · Magic K</div>
+    </div>
+
+    <div id="creator" class="overlay hidden">
+      <h2>Create your hero</h2>
+      <div class="creator-grid">
+        <div class="preview">
+          <canvas id="char-preview" width="96" height="128"></canvas>
+        </div>
+        <div class="fields">
+          <label>Name <input id="cc-name" maxlength="12" value="Hero" /></label>
+          <label>Class
+            <select id="cc-class">
+              <option value="warrior">Warrior — strong & tough</option>
+              <option value="mage">Mage — magical attacker</option>
+              <option value="rogue">Rogue — fast & critical</option>
+            </select>
+          </label>
+          <label>Skin
+            <div class="swatches" id="cc-skin"></div>
+          </label>
+          <label>Hair
+            <div class="swatches" id="cc-hair"></div>
+          </label>
+          <label>Shirt
+            <div class="swatches" id="cc-shirt"></div>
+          </label>
+          <label>Pants
+            <div class="swatches" id="cc-pants"></div>
+          </label>
+          <div class="buttons">
+            <button id="cc-back">Back</button>
+            <button id="cc-start">Begin Adventure</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="menu" class="overlay hidden">
+      <h2>Pause Menu</h2>
+      <div class="menu">
+        <div class="stats" id="menu-stats"></div>
+        <h3>Quests</h3>
+        <ul id="menu-quests"></ul>
+        <h3>Inventory</h3>
+        <ul id="menu-inventory"></ul>
+        <div class="buttons">
+          <button id="menu-resume">Resume</button>
+          <button id="menu-save">Save</button>
+          <button id="menu-quit">Quit to Title</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="combat" class="overlay hidden">
+      <div class="combat-stage">
+        <div class="combat-actors">
+          <canvas id="combat-player" width="64" height="64"></canvas>
+          <div id="combat-vs">⚔</div>
+          <canvas id="combat-enemy" width="64" height="64"></canvas>
+        </div>
+        <div class="combat-bars">
+          <div>
+            <div id="cp-name">Hero</div>
+            <div class="bar"><div id="cp-hp" class="bar-fill hp"></div></div>
+            <div class="bar"><div id="cp-mp" class="bar-fill mp"></div></div>
+          </div>
+          <div>
+            <div id="ce-name">Slime</div>
+            <div class="bar"><div id="ce-hp" class="bar-fill hp"></div></div>
+          </div>
+        </div>
+        <div class="combat-log" id="combat-log"></div>
+        <div class="combat-actions">
+          <button data-act="attack">Attack (J)</button>
+          <button data-act="magic">Magic (K)</button>
+          <button data-act="defend">Defend (L)</button>
+          <button data-act="flee">Flee (F)</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="help" class="overlay hidden">
+      <h2>How to Play</h2>
+      <ul class="help">
+        <li><b>Move:</b> WASD or Arrow keys</li>
+        <li><b>Interact / Talk / Enter:</b> E or Space</li>
+        <li><b>Menu:</b> Tab — quests, inventory, save</li>
+        <li><b>Combat — Attack:</b> J · <b>Magic:</b> K · <b>Defend:</b> L · <b>Flee:</b> F</li>
+        <li>Talk to villagers for missions. Step on dungeon entries to descend. Find the boss!</li>
+      </ul>
+      <div class="buttons"><button id="help-back">Back</button></div>
+    </div>
+  </div>
+
+  <script src="js/sprites.js"></script>
+  <script src="js/maps.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/combat.js"></script>
+  <script src="js/quests.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

@@ -1,1 +1,60 @@
-readme baby
+PIXEL REALM — a 16-bit pocket RPG
+=================================
+
+A complete browser-based, 16-bit pixel-art RPG. No build step, no
+dependencies — every sprite is procedurally rendered onto an HTML5
+canvas at runtime from compact text patterns.
+
+Just open `index.html` (or serve the folder with any static server)
+and play.
+
+Features
+--------
+- Title menu, save/load (localStorage)
+- Character creator: name, class (Warrior / Mage / Rogue),
+  customizable skin / hair / shirt / pants colors with live preview
+- Multiple maps:
+    - Overworld (forest, paths, river, fields)
+    - Pixel Village (3 enterable houses)
+    - Crypt of Shadows dungeon
+    - Dark Spire dungeon (gated by a quest)
+    - 3 cozy interiors (Healer, Smith, Granny)
+- 5 enemy types with unique sprites: Slime, Cave Bat, Skeleton,
+  Goblin, and the Dark Lord boss
+- Turn-based combat: Attack / Magic / Defend / Flee, XP, levels,
+  random damage variance, free-action "defend" reduces incoming damage
+- 6 quests / missions with NPC givers, kill / collect / event goals,
+  and rewards (XP, gold, items)
+- Inventory, Healer NPC, treasure chests
+- Day-cycle-style camera follow, smooth movement, walking animation
+
+Controls
+--------
+- Move      WASD / Arrow keys
+- Interact  E / Space (talk, read sign, open chest, enter door)
+- Pause / Menu  Tab
+- Combat:   Attack J · Magic K · Defend L · Flee F
+
+Tip: walking onto an outdoor portal auto-enters it.  House doors
+and dungeon entrances always require a press of E.
+
+Running locally
+---------------
+Any static HTTP server works.  Examples:
+
+    python3 -m http.server 8000
+    # then open http://localhost:8000
+
+Project layout
+--------------
+    index.html          — page + UI overlays
+    css/style.css       — all styling
+    js/sprites.js       — palettes + procedural pixel renderer
+    js/maps.js          — overworld, village, dungeons, interiors
+    js/input.js         — keyboard handling
+    js/quests.js        — quest definitions & progress tracking
+    js/combat.js        — turn-based combat
+    js/ui.js            — title, character creator, dialog, HUD
+    js/game.js          — main game loop, world & interactions
+
+Saves are kept in `localStorage` under the key `pixelrealm_save`.
