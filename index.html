@@ -44,8 +44,11 @@
     <div id="creator" class="overlay hidden">
       <h2>Create your hero</h2>
       <div class="creator-grid">
-        <div class="preview">
-          <canvas id="char-preview" width="96" height="128"></canvas>
+        <div class="preview-col">
+          <div class="preview">
+            <canvas id="char-preview" width="96" height="128"></canvas>
+          </div>
+          <div id="cc-stats" class="cc-stats"></div>
         </div>
         <div class="fields">
           <label>Name <input id="cc-name" maxlength="12" value="Hero" /></label>
@@ -56,10 +59,19 @@
               <option value="rogue">Rogue — fast & critical</option>
             </select>
           </label>
+          <label>Hair Style
+            <select id="cc-hairstyle">
+              <option value="short">Short</option>
+              <option value="long">Long</option>
+              <option value="spiky">Spiky</option>
+              <option value="ponytail">Ponytail</option>
+              <option value="bald">Bald</option>
+            </select>
+          </label>
           <label>Skin
             <div class="swatches" id="cc-skin"></div>
           </label>
-          <label>Hair
+          <label>Hair Color
             <div class="swatches" id="cc-hair"></div>
           </label>
           <label>Shirt
@@ -68,7 +80,11 @@
           <label>Pants
             <div class="swatches" id="cc-pants"></div>
           </label>
+          <label>Boots
+            <div class="swatches" id="cc-boots"></div>
+          </label>
           <div class="buttons">
+            <button id="cc-random">Randomize</button>
             <button id="cc-back">Back</button>
             <button id="cc-start">Begin Adventure</button>
           </div>

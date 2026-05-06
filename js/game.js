@@ -63,7 +63,9 @@
       name: opts.name || 'Hero',
       cls,
       skin: opts.skin, hair: opts.hair, shirt: opts.shirt, pants: opts.pants,
-      x: 16 * TILE, y: 10 * TILE, // pixel position (top-left of 16x16 sprite)
+      boots: opts.boots || '#1a1410',
+      hairStyle: opts.hairStyle || 'short',
+      x: 16 * TILE, y: 10 * TILE,
       dir: 'down', frame: 0, walkAnim: 0,
       level: 1,
       xp: 0,
@@ -74,8 +76,9 @@
       inventory: [],
       quests: Quests.newQuestLog(),
       mapId: 'overworld',
-      flags: {}, // arbitrary flags (e.g., for unlocking dungeon2)
+      flags: {},
       _returnTo: null,
+      _idleTimer: 0,
     };
   }
 
@@ -429,11 +432,13 @@
     if (mvx || mvy) {
       const len = Math.hypot(mvx, mvy) || 1;
       tryMove(p, mvx / len * speed * dt, mvy / len * speed * dt);
-      p.walkAnim += dt * 8;
-      p.frame = Math.floor(p.walkAnim) % 2;
+      p.walkAnim += dt * 6;
+      p.frame = Math.floor(p.walkAnim) % 4;
+      p._idleTimer = 0;
     } else {
       p.walkAnim = 0;
       p.frame = 0;
+      p._idleTimer += dt;
     }
 
     // Interaction key
@@ -489,28 +494,39 @@
     ents.push({ kind: 'player', x: G.player.x, y: G.player.y, obj: G.player });
     ents.sort((a, b) => a.y - b.y);
 
+    const now = G.lastTime / 1000;
     for (const ent of ents) {
       const drawX = ent.x - G.cameraX;
       const drawY = ent.y - G.cameraY;
       if (drawX < -16 || drawY < -16 || drawX > VIEW_W || drawY > VIEW_H) continue;
       if (ent.kind === 'player') {
         const p = ent.obj;
+        const idleBob = (p._idleTimer > 0.5) ? Math.round(Math.sin(now * 2.5) * 0.6) : 0;
         Sprites.drawChar(ctx, drawX, drawY, {
           dir: p.dir, frame: p.frame,
+          hairStyle: p.hairStyle,
           skin: p.skin, hair: p.hair, shirt: p.shirt, pants: p.pants,
+          boots: p.boots,
+          _idleOffset: idleBob,
         });
       } else if (ent.kind === 'npc') {
-        // simple NPC: random color appearance derived from name
         const seed = ent.obj.name.charCodeAt(0) || 1;
+        const npcBob = Math.round(Math.sin(now * 1.8 + seed) * 0.5);
+        const npcDir = (Math.floor(now / 3 + seed) % 2 === 0) ? 'down' : 'right';
+        const npcFrame = Math.floor(now * 2 + seed) % 4;
+        const npcHairStyles = ['short','long','spiky','ponytail'];
         Sprites.drawChar(ctx, drawX, drawY, {
-          dir: 'down', frame: 0,
+          dir: npcDir, frame: npcFrame,
+          hairStyle: npcHairStyles[seed % npcHairStyles.length],
           skin: '#f0c896',
           hair: ['#3a2418', '#a02020', '#e0b95c', '#6045b8'][seed % 4],
           shirt: ['#3a6dc1', '#3aa657', '#c1453a', '#7a3aa6'][seed % 4],
           pants: '#2a2a3a',
+          _idleOffset: npcBob,
         });
       } else if (ent.kind === 'enemy') {
-        Sprites.drawEnemy(ctx, drawX, drawY, ent.obj.kind);
+        const enemyBob = Math.round(Math.sin(now * 3 + ent.x * 7) * 1);
+        Sprites.drawEnemy(ctx, drawX, drawY + enemyBob, ent.obj.kind);
       }
     }
 
